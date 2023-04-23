@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 type ResponseData = {
-    // Define the shape of your response data here
-    someField: string;
+    message: string;
+    website_url: string;
 };
 
 const Container = styled.div`
@@ -18,27 +18,38 @@ const Title = styled.h1`
   margin-bottom: 1rem;
 `;
 
-const ResultWrapper = styled.div`
-  background-color: #f5f5f5;
+const Message = styled.p`
+  margin-bottom: 1rem;
+`;
+
+const Button = styled.button`
+  background-color: #007bff;
+  border: none;
   border-radius: 4px;
-  padding: 1rem;
-  width: 100%;
-  max-width: 600px;
-  overflow: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
 
 const ResultPage: React.FC = () => {
     const location = useLocation<{ data: ResponseData }>();
-    const data = location.state.data;
+    const { message, website_url } = location.state.data;
 
     return (
         <Container>
             <Title>Response from the API</Title>
-            <ResultWrapper>
-                <pre>{JSON.stringify(data, null, 2)}</pre>
-            </ResultWrapper>
+            <Message>{message}</Message>
+            <a href={website_url} target="_blank" rel="noopener noreferrer">
+                <Button>Visit Generated Website</Button>
+            </a>
         </Container>
     );
 };

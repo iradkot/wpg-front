@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { sendWebsiteDetails } from '../api';
-import ResponseDisplay from '../components/ResponseDisplay';
+import styled from 'styled-components';
 
-export const ResultPage: React.FC = () => {
-    const location = useLocation();
-    const [response, setResponse] = useState<any>(null);
+type ResponseData = {
+    // Define the shape of your response data here
+    someField: string;
+};
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = location.state.data;
-                const result = await sendWebsiteDetails(data);
-                setResponse(result);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+`;
 
-        fetchData();
-    }, [location]);
+const Title = styled.h1`
+  margin-bottom: 1rem;
+`;
+
+const ResultWrapper = styled.div`
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+`;
+
+const ResultPage: React.FC = () => {
+    const location = useLocation<{ data: ResponseData }>();
+    const data = location.state.data;
 
     return (
-        <div>
-            <h1>Website Details</h1>
-            {response && <ResponseDisplay response={response} />}
-        </div>
+        <Container>
+            <Title>Response from the API</Title>
+            <ResultWrapper>
+                <pre>{JSON.stringify(data, null, 2)}</pre>
+            </ResultWrapper>
+        </Container>
     );
 };
+
+export default ResultPage;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { sendWebsiteDetails } from '../api';
-import { ResponseDisplay } from '../components/ResponseDisplay';
+import ResponseDisplay from '../components/ResponseDisplay';
 
 export const ResultPage: React.FC = () => {
     const location = useLocation();
@@ -10,7 +10,7 @@ export const ResultPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = location.state as any;
+                const data = location.state.data;
                 const result = await sendWebsiteDetails(data);
                 setResponse(result);
             } catch (error) {
